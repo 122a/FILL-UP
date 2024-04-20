@@ -54,6 +54,7 @@ flutter:
   assets:
     - assets/password_icon.png
     - assets/fill_up_logo.png
+    - assets/simple_login_info.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -90,9 +91,26 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: SF-Pro
+    - family: SF-Pro-Display
       fonts:
-        - asset: fonts/SF-Pro.ttf
+        - asset: fonts/SF-Pro-Display-Ultralight.otf
+          weight: 100
+        - asset: fonts/SF-Pro-Display-Thin.otf
+          weight: 200
+        - asset: fonts/SF-Pro-Display-Light.otf
+          weight: 300
+        - asset: fonts/SF-Pro-Display-Regular.otf
+          weight: 400
+        - asset: fonts/SF-Pro-Display-Medium.otf
+          weight: 500
+        - asset: fonts/SF-Pro-Display-Semibold.otf
+          weight: 600
+        - asset: fonts/SF-Pro-Display-Bold.otf
+          weight: 700
+        - asset: fonts/SF-Pro-Display-Heavy.otf
+          weight: 800
+        - asset: fonts/SF-Pro-Display-Black.otf
+          weight: 900
 
     - family: SF-Pro-Rounded
       fonts:
