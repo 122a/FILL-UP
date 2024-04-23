@@ -51,7 +51,12 @@ class _AppState extends State<App> {
                   ),
                   Container(
                     //로고
-                    child: Image.asset('assets/fill_up_logo.png'),
+                    child: Image.asset(
+                      'assets/fill_up_logo.png',
+                      width: 53,
+                      height: 51,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   const Text(
                     "Fill UP",
