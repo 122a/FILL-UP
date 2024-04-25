@@ -1,4 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:front/main.dart';
 import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
@@ -170,12 +175,77 @@ class _LoginState extends State<Login> {
                 // 간편로그인 안내 information
                 child: Image.asset('assets/simple_login_info.png'),
               ),
+              SizedBox(
+                //네이버 로그인 버튼
+                width: 353,
+                height: 48,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      color: Color.fromRGBO(107, 107, 109, 0.3),
+                      width: 1,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: SvgPicture.asset(
+                    'assets/icons/naver_icon.svg',
+                    width: 35,
+                    height: 35,
+                  ),
+                  label: const Text(
+                    "네이버 로그인",
+                    style: TextStyle(
+                      color: Color(0xff6b6b6d),
+                      fontFamily: "SF-Pro-Display",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(
-                //로그인 info와 회원가입 버튼 사이의 간격 (이 건 추 후 수정 될 가능성 큼)
-                height: 135,
+                // 네이버 로그인 버튼과 구글 로그인 버튼 사이 여백
+                height: 16,
+              ),
+              SizedBox(
+                //구글 로그인 버튼
+                width: 353,
+                height: 48,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      color: Color.fromRGBO(107, 107, 109, 0.3),
+                      width: 1,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  icon: SvgPicture.asset(
+                    'assets/icons/google_icon.svg',
+                    width: 35,
+                    height: 35,
+                  ),
+                  label: const Text(
+                    "구글  로그인",
+                    style: TextStyle(
+                      color: Color(0xff6b6b6d),
+                      fontFamily: "SF-Pro-Display",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               TextButton(
-                // 회원가입 페이지로 향하는 텍스트버ㅌ
+                // 회원가입 페이지로 향하는 텍스트버튼
                 onPressed: () => context.go('/details'),
                 child: const Row(
                   // 회원가입 안내와 버튼
