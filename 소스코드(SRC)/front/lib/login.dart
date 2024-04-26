@@ -22,6 +22,7 @@ class _LoginState extends State<Login> {
         // cursor 색상
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xff004fff),
+          selectionColor: Color.fromARGB(135, 0, 81, 255),
         ),
       ),
       home: Scaffold(
