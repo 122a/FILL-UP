@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
                 children: [
                   const SizedBox(
                     //로고와 왼쪽 벽사이의 여백
-                    width: 96,
+                    width: 80,
                   ),
                   Container(
                     //로고
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(
                 //로고와 입력창 사이의 여백
-                height: 150,
+                height: 100,
               ),
               Form(
                 child: Column(
