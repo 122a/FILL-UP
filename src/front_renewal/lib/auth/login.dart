@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_renewal/main.dart';
 import 'package:front_renewal/auth/signup.dart';
-import 'package:front_renewal/timer/count.dart'; //test
 import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
