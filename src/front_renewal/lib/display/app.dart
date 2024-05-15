@@ -12,13 +12,6 @@ class App extends GetView<AppContlloer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        shape: const Border(
-          bottom: BorderSide(color: Colors.grey, width: 0.5),
-        ),
-        title: const Text("Title"),
-      ),
       body: Obx(() {
         switch (RouteName.values[controller.currentIndex.value]) {
           case RouteName.home:
