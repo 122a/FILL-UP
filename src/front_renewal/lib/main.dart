@@ -2,21 +2,32 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:front_renewal/login.dart';
-import 'package:front_renewal/signup.dart';
+import 'package:front_renewal/auth/login.dart';
+import 'package:front_renewal/auth/signup.dart';
+import 'package:front_renewal/binding/init_binding.dart';
+import 'package:front_renewal/display/app.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const FillUp());
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class FillUp extends StatelessWidget {
+  const FillUp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      home: Login(),
+    return GetMaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.white,
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      initialBinding: InitialBinding(),
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const App()),
+      ],
     );
   }
 }

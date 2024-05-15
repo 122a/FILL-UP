@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_renewal/main.dart';
-import 'package:front_renewal/signup.dart';
+import 'package:front_renewal/auth/signup.dart';
 import 'package:get/get.dart';
 
 class Login extends StatelessWidget {

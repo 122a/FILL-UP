@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:front_renewal/login.dart';
+import 'package:front_renewal/auth/login.dart';
 import 'package:get/get.dart';
 
 class SignUp extends StatelessWidget {
