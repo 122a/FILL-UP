@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/controller/app_controller.dart';
+import 'package:front_renewal/display/pages/home.dart';
+import 'package:front_renewal/display/pages/my.dart';
+import 'package:front_renewal/display/pages/search.dart';
 import 'package:get/get.dart';
 
 class App extends GetView<AppContlloer> {
@@ -15,6 +19,24 @@ class App extends GetView<AppContlloer> {
         ),
         title: const Text("Title"),
       ),
+      body: Obx(() {
+        switch (RouteName.values[controller.currentIndex.value]) {
+          case RouteName.home:
+            return const Home();
+            // ignore: dead_code
+            break;
+          case RouteName.search:
+            return const Search();
+            // ignore: dead_code
+            break;
+          case RouteName.my:
+            return const My();
+            // ignore: dead_code
+            break;
+          default:
+            return Container();
+        }
+      }),
       // 하단 메뉴 바 구현
       bottomNavigationBar: Theme(
         //Theme 위젯은 하단 바 내의 요소들의 공통적인 속성을 부여하기 위해서 쓰는 것,
