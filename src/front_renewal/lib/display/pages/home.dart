@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_renewal/display/components/customAppBar.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -33,11 +32,13 @@ class Home extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
-            leading: _lead(),
+            //상단 바
+            leading: _lead(), //상단바 좌측 아이콘
             leadingWidth: 200,
             floating: true,
             snap: true,
             actions: [
+              // 상단바 우측 아이콘들
               Container(
                 width: 35,
                 height: 35,
@@ -55,9 +56,11 @@ class Home extends StatelessWidget {
                 ),
               ),
               const SizedBox(
+                //상단바 우측 아이콘 들끼리의 간격
                 width: 15,
               ),
               Container(
+                //reddit 아이콘
                 width: 35,
                 height: 35,
                 decoration: BoxDecoration(
@@ -77,6 +80,7 @@ class Home extends StatelessWidget {
                 width: 5,
               ),
               IconButton(
+                //검색 버튼
                 onPressed: () {},
                 icon: const Icon(
                   Icons.search,
@@ -89,9 +93,11 @@ class Home extends StatelessWidget {
             ],
           ),
           SliverList(
+            //동영상 썸네일이나 정보 같은 것들, 동영상 위젯들
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return Padding(
+                  //동영상 요소들의 특징과 사이 간격
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Container(
                     height: 300,
@@ -99,7 +105,7 @@ class Home extends StatelessWidget {
                   ),
                 );
               },
-              childCount: 10,
+              childCount: 10, // 화면에 나타낼 최대 동영상 갯수.
             ),
           ),
         ],
