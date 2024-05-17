@@ -52,7 +52,7 @@ class Home extends StatelessWidget {
         width: 15,
       ),
       Container(
-        //reddit 아이콘 --> 후에 구글로 수정할 것.!!!
+        //구글 아이콘
         width: 35,
         height: 35,
         decoration: BoxDecoration(
@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
         child: IconButton(
           onPressed: () {},
           icon: SvgPicture.asset(
-            'assets/icons/Reddit.svg',
+            'assets/icons/google_icon.svg',
             width: 50,
           ),
         ),
