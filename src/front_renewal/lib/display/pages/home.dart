@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_renewal/display/components/vidio_widget.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -106,13 +107,9 @@ class Home extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               //delegate 파라미터를 사용해서 동영상들의 공통적인 특징을 정해주는 것 같음.
               (context, index) {
-                return Padding(
-                  //동영상 요소들의 특징과 사이 간격
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Container(
-                    height: 300,
-                    color: const Color.fromARGB(42, 0, 81, 255),
-                  ),
+                return GestureDetector(
+                  onTap: () {},
+                  child: const VidioWidget(),
                 );
               },
               childCount: 10, // 화면에 나타낼 최대 동영상 갯수.
