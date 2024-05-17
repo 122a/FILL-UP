@@ -3,7 +3,7 @@ import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/pages/home.dart';
 import 'package:front_renewal/display/pages/my.dart';
-import 'package:front_renewal/display/pages/search.dart';
+import 'package:front_renewal/display/pages/fillup_ai.dart';
 import 'package:get/get.dart';
 
 class App extends GetView<AppContlloer> {
@@ -19,7 +19,7 @@ class App extends GetView<AppContlloer> {
             // ignore: dead_code
             break;
           case RouteName.search:
-            return const Search();
+            return const FillUpAI();
             // ignore: dead_code
             break;
           case RouteName.my:
@@ -52,9 +52,9 @@ class App extends GetView<AppContlloer> {
                   activeIcon: Icon(Icons.home_filled),
                   label: "홈"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  activeIcon: Icon(Icons.search),
-                  label: "검색"),
+                  icon: Icon(Icons.child_care_sharp),
+                  activeIcon: Icon(Icons.child_care_sharp),
+                  label: "Fill Up AI"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   activeIcon: Icon(Icons.person),
