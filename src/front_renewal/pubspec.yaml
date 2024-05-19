@@ -63,6 +63,7 @@ flutter:
     - assets/password_icon.png
     - assets/fill_up_logo.png
     - assets/simple_login_info.png
+    - assets/profile.png
     - assets/icons/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -140,4 +141,13 @@ flutter:
         - asset: fonts/SF-Pro-Rounded-Heavy.otf
           weight: 800
         - asset: fonts/SF-Pro-Rounded-Black.otf
+          weight: 900
+
+    - family: Pretendard
+      fonts:
+        - asset: fonts/Pretendard-ExtraBold.otf
+          weight: 600
+        - asset: fonts/Pretendard-Bold.otf
+          weight: 700
+        - asset: fonts/Pretendard-Black.otf
           weight: 900
