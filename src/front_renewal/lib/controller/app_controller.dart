@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-class AppContlloer extends GetxService {
-  static AppContlloer get to => Get.find();
+class AppController extends GetxService {
+  static AppController get to => Get.find();
   RxInt currentIndex = 0.obs;
 
   void changePageIndex(int index) {
@@ -18,6 +20,7 @@ class TimerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _loadStartTime();
     startTimer();
   }
 
@@ -25,15 +28,32 @@ class TimerController extends GetxController {
   void onClose() {
     super.onClose();
     _timer.cancel();
+    _saveStartTime();
   }
 
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (_) {
-      Future.microtask(() => updateElapsedTime());
+      updateElapsedTime();
     });
   }
 
   void updateElapsedTime() {
     elapsedTime.value = DateTime.now().difference(startTime);
+  }
+
+  Future<void> _saveStartTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('startTime', startTime.toIso8601String());
+  }
+
+  Future<void> _loadStartTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? startTimeStr = prefs.getString('startTime');
+    if (startTimeStr != null) {
+      startTime = DateTime.parse(startTimeStr);
+    } else {
+      startTime = DateTime.now();
+      _saveStartTime();
+    }
   }
 }

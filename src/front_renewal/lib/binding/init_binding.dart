@@ -6,6 +6,6 @@ enum RouteName { home, search, my }
 class InitialBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(AppContlloer());
+    Get.put(AppController());
   }
 }

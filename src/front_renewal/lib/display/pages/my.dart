@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:front_renewal/auth/login.dart';
+import 'package:front_renewal/display/app.dart';
 import 'package:front_renewal/controller/app_controller.dart';
 
-class My extends StatelessWidget {
+class My extends StatelessWidget with WidgetsBindingObserver {
   const My({super.key});
 
-  @override
+ @override
   Widget build(BuildContext context) {
     final TimerController timerController = Get.put(TimerController());
     return Scaffold(
@@ -27,6 +27,12 @@ class My extends StatelessWidget {
             height: 1.0,
           ),
         ),
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            Get.to(const App());
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -34,7 +40,8 @@ class My extends StatelessWidget {
           Expanded(
             flex: 2, // 20%
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Row(
                 children: [
                   ClipRRect(
@@ -82,10 +89,11 @@ class My extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: TextButton(
                             onPressed: () {
-                              Get.to(const Login());
+                              Get.to(const App());
                             },
                             style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 8.0),
                               minimumSize: Size(0, 0),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
@@ -107,7 +115,6 @@ class My extends StatelessWidget {
               ),
             ),
           ),
-
           Divider(color: Color.fromARGB(255, 224, 224, 224)),
           // 실행 시간 섹션
           Expanded(
@@ -132,15 +139,18 @@ class My extends StatelessWidget {
                       children: [
                         Text(
                           ' 시청 시간',
-                          style: TextStyle(fontSize: 15, color: Color(0xE8707070)),
+                          style:
+                              TextStyle(fontSize: 15, color: Color(0xE8707070)),
                         ),
                         Obx(() {
                           timerController.updateElapsedTime();
                           final elapsedTime = timerController.elapsedTime.value;
+                          final minutes = (elapsedTime.inMinutes % 60); // 분
+                          final seconds = (elapsedTime.inSeconds % 60); // 초
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              '  ${elapsedTime.inHours} h  ${elapsedTime.inMinutes % 60} min',
+                              '${seconds} h  ${minutes} min',
                               style: TextStyle(
                                 height: 2.5,
                                 fontFamily: "Pretendard-Black",
@@ -182,7 +192,8 @@ class My extends StatelessWidget {
                       children: [
                         Text(
                           ' 타임 슬롯',
-                          style: TextStyle(fontSize: 15, color: Color(0xE8707070)),
+                          style:
+                              TextStyle(fontSize: 15, color: Color(0xE8707070)),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),

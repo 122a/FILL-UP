@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:front_renewal/auth/login.dart';
-import 'package:front_renewal/auth/signup.dart';
 import 'package:front_renewal/binding/init_binding.dart';
+import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/app.dart';
 import 'package:get/get.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(TimerController()); // 타이머 컨트롤러 초기화
   runApp(const FillUp());
 }
 

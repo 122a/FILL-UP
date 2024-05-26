@@ -6,7 +6,7 @@ import 'package:front_renewal/display/pages/my.dart';
 import 'package:front_renewal/display/pages/fillup_ai.dart';
 import 'package:get/get.dart';
 
-class App extends GetView<AppContlloer> {
+class App extends GetView<AppController> {
   const App({super.key});
 
   @override
