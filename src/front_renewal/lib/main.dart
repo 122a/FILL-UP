@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:front_renewal/auth/login.dart';
 import 'package:front_renewal/auth/signup.dart';
-import 'package:front_renewal/timer/count.dart';
 import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/display/app.dart';
 import 'package:get/get.dart';
@@ -27,7 +26,7 @@ class FillUp extends StatelessWidget {
       initialBinding: InitialBinding(),
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => Count()),
+        GetPage(name: '/', page: () => const App()),
       ],
     );
   }

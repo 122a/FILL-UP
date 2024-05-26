@@ -29,7 +29,7 @@ class TimerController extends GetxController {
 
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (_) {
-      updateElapsedTime();
+      Future.microtask(() => updateElapsedTime());
     });
   }
 
