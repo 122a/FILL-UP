@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/pages/home.dart';
@@ -15,7 +16,7 @@ class App extends GetView<AppController> {
       body: Obx(() {
         switch (RouteName.values[controller.currentIndex.value]) {
           case RouteName.home:
-            return const Home();
+            return Home();
             // ignore: dead_code
             break;
           case RouteName.search:
@@ -46,19 +47,29 @@ class App extends GetView<AppController> {
             type: BottomNavigationBarType.fixed,
             currentIndex: controller.currentIndex.value,
             onTap: controller.changePageIndex,
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.home_filled),
                   activeIcon: Icon(Icons.home_filled),
                   label: "홈"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.child_care_sharp),
-                  activeIcon: Icon(Icons.child_care_sharp),
+                  icon: SvgPicture.asset(
+                    'assets/icons/Google_Bard_logo.svg',
+                    width: 20,
+                    height: 20,
+                    color: Colors.grey,
+                  ),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/Google_Bard_logo.svg',
+                    width: 20,
+                    height: 20,
+                    color: const Color(0xff004FFF),
+                  ),
                   label: "Fill Up AI"),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   activeIcon: Icon(Icons.person),
-                  label: "나"),
+                  label: "내정보"),
             ],
           ),
         ),
