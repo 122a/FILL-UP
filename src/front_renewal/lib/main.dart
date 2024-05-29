@@ -6,6 +6,7 @@ import 'package:front_renewal/auth/login.dart';
 import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/app.dart';
+import 'package:front_renewal/display/pages/search.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -29,6 +30,7 @@ class FillUp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => const App()),
+        GetPage(name: '/search', page: () => const Search()),
       ],
     );
   }

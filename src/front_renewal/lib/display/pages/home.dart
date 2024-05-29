@@ -76,7 +76,9 @@ class Home extends StatelessWidget {
       ),
       IconButton(
         //검색 버튼
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed("/search");
+        },
         icon: const Icon(
           Icons.search,
           size: 25,
