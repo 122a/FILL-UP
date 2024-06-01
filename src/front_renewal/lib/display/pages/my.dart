@@ -1,14 +1,16 @@
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:front_renewal/display/app.dart';
 import 'package:front_renewal/controller/app_controller.dart';
+import 'package:front_renewal/display/pages/account_my.dart'; // 계정 관리 페이지 추가
 
 class My extends StatelessWidget with WidgetsBindingObserver {
   const My({super.key});
 
- @override
+  @override
   Widget build(BuildContext context) {
     final TimerController timerController = Get.put(TimerController());
+    final AccountController accountController = Get.put(AccountController());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,12 +29,6 @@ class My extends StatelessWidget with WidgetsBindingObserver {
             height: 1.0,
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            Get.to(const App());
-          },
-        ),
       ),
       body: Column(
         children: [
@@ -42,16 +38,24 @@ class My extends StatelessWidget with WidgetsBindingObserver {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Row(
+              child: Row( // 사용자 계정 이미지
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(25.0),
-                    child: Image.asset(
-                      'assets/profile.png',
-                      width: 70,
-                      height: 70,
-                    ),
-                  ),
+                  Obx(() {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(25.0),
+                      child: Image.file(
+                        File(Get.find<AccountController>()
+                            .profileImagePath
+                            .value),
+                        width: 70,
+                        height: 70,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.error); // 기본 아이콘으로 대체
+                        },
+                      ),
+                    );
+                  }),
                   SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -61,14 +65,16 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              ' 허찬',
-                              style: TextStyle(
-                                fontFamily: "pretendard",
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
+                            Obx(() {
+                              return Text(
+                                ' ${Get.find<AccountController>().userName.value}',
+                                style: TextStyle(
+                                  fontFamily: "pretendard",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              );
+                            }),
                             Icon(
                               Icons.expand_more,
                               color: Color.fromARGB(255, 90, 90, 90),
@@ -89,7 +95,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                           alignment: Alignment.centerLeft,
                           child: TextButton(
                             onPressed: () {
-                              Get.to(const App());
+                              Get.to(AccountManagementPage());
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(
@@ -150,7 +156,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              '${seconds} h  ${minutes} min',
+                              ' ${minutes} h  ${seconds} min',
                               style: TextStyle(
                                 height: 2.5,
                                 fontFamily: "Pretendard-Black",
