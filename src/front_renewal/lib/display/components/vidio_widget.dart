@@ -37,12 +37,12 @@ class _VidioWidgetState extends State<VidioWidget> {
 
   Widget _thumbnail() {
     return Container(
-      height: 230,
+      height: 220,
       color: const Color.fromARGB(52, 0, 81, 255),
       child: Image.network(
         widget.video.snippet.thumbnails.high.url,
         width: 411.3,
-        height: 230,
+        height: 220,
         fit: BoxFit.fitWidth,
       ),
     );
