@@ -150,7 +150,7 @@ class AccountManagementPage extends StatelessWidget {
                           fontFamily: "SF-Pro-Rounded",
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
-                          color: Colors.blue,
+                          color: Color(0xff0b44f4),
                         ),
                       ),
                     ),
