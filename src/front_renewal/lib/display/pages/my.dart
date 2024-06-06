@@ -15,7 +15,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '내 정보',
           style: TextStyle(
             fontFamily: "SF-Pro-Display",
@@ -24,7 +24,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
           ),
         ),
         centerTitle: true,
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Divider(
             color: Color.fromARGB(255, 224, 224, 224),
@@ -58,7 +58,8 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                     height: 70,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return Icon(Icons.error); // 기본 아이콘으로 대체
+                                      return const Icon(
+                                          Icons.error); // 기본 아이콘으로 대체
                                     },
                                   )
                                 : Image.file(
@@ -67,17 +68,18 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                     height: 70,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return Icon(Icons.error); // 기본 아이콘으로 대체
+                                      return const Icon(
+                                          Icons.error); // 기본 아이콘으로 대체
                                     },
                                   ),
                           );
                         }),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 35),
+                              const SizedBox(height: 35),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -85,7 +87,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                   Obx(() {
                                     return Text(
                                       ' ${accountController.userName.value}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: "pretendard",
                                         fontSize: 18,
                                         fontWeight: FontWeight.w800,
@@ -100,12 +102,13 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                       accountController.isExpanded.value
                                           ? Icons.expand_less
                                           : Icons.expand_more,
-                                      color: Color.fromARGB(255, 90, 90, 90),
+                                      color:
+                                          const Color.fromARGB(255, 90, 90, 90),
                                     ),
                                   ),
                                 ],
                               ),
-                              Text(
+                              const Text(
                                 '  chan0823kr@gmail.com',
                                 style: TextStyle(
                                   fontFamily: "SF-Pro-Rounded",
@@ -114,21 +117,21 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                   color: Color(0xff747474),
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: TextButton(
                                   onPressed: () {
-                                    Get.to(AccountManagementPage());
+                                    Get.to(const AccountManagementPage());
                                   },
                                   style: TextButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 4.0, horizontal: 8.0),
-                                    minimumSize: Size(0, 0),
+                                    minimumSize: const Size(0, 0),
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     "내 계정 관리하기",
                                     style: TextStyle(
                                       fontFamily: "SF-Pro-Rounded",
@@ -158,32 +161,33 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("계정에서 로그아웃",
+                                      title: const Text("계정에서 로그아웃",
                                           style: TextStyle(
                                             fontFamily: "SF-Pro-Rounded",
                                             fontSize: 20,
                                             fontWeight: FontWeight.w800,
                                           )),
-                                      content: Text("정말 로그아웃 하시겠습니까?"),
+                                      content: const Text("정말 로그아웃 하시겠습니까?"),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
-                                            Get.to(Login()); // 로그인 페이지로 이동
+                                            Get.to(
+                                                const Login()); // 로그인 페이지로 이동
                                           },
-                                          child: Text("예"),
+                                          child: const Text("예"),
                                         ),
                                         TextButton(
                                           onPressed: () {
                                             Get.back();
                                           },
-                                          child: Text("아니오"),
+                                          child: const Text("아니오"),
                                         ),
                                       ],
                                     );
                                   },
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 "계정에서 로그아웃",
                                 style: TextStyle(
                                   fontFamily: "SF-Pro-Rounded",
@@ -200,14 +204,14 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                 ),
               );
             }),
-            Divider(color: Color.fromARGB(255, 224, 224, 224)),
+            const Divider(color: Color.fromARGB(255, 224, 224, 224)),
             // 실행 시간 섹션
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 40,
                     child: Icon(
                       Icons.schedule,
@@ -215,12 +219,12 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                       size: 30,
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           ' 시청 시간',
                           style:
                               TextStyle(fontSize: 15, color: Color(0xE8707070)),
@@ -234,13 +238,13 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              ' ${minutes} h  ${seconds} min',
+                              ' $minutes h  $seconds min',
                               style: TextStyle(
                                 height: 2.5,
                                 fontFamily: "Pretendard-Black",
                                 fontSize: 50,
                                 fontWeight: FontWeight.w900,
-                                color: Color.fromARGB(255, 9, 150, 245),
+                                color: const Color.fromARGB(255, 9, 150, 245),
                                 letterSpacing: isDoubleDigit
                                     ? -2.0
                                     : 0.0, // 두 자릿수일 때 간격 줄이기
@@ -254,10 +258,10 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                 ],
               ),
             ),
-            Divider(color: Color.fromARGB(255, 224, 224, 224)),
+            const Divider(color: Color.fromARGB(255, 224, 224, 224)),
             // 타임 슬롯 섹션
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -280,7 +284,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                               TextStyle(fontSize: 15, color: Color(0xE8707070)),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
                             '타임 슬롯 내용',
                             style: TextStyle(fontSize: 16, color: Colors.grey),

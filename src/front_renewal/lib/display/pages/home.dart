@@ -116,7 +116,9 @@ class Home extends StatelessWidget {
                 //delegate 파라미터를 사용해서 동영상들의 공통적인 특징을 정해주는 것 같음.
                 (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed('/detail/:23456');
+                    },
                     child: VidioWidget(
                         video: controller.youtubeResult.value.items![index]),
                   );
