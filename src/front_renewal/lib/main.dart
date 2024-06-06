@@ -7,11 +7,12 @@ import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/app.dart';
 import 'package:front_renewal/display/pages/search.dart';
-import 'package:front_renewal/display/pages/my.dart';
+// import 'package:front_renewal/display/pages/my.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   Get.put(TimerController()); // 타이머 컨트롤러 초기화
   runApp(const FillUp());
 }

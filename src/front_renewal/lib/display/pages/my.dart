@@ -226,7 +226,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                 ),
               );
             }),
-            Divider(color: Color.fromARGB(255, 224, 224, 224)),
+            Divider(color: Color(0xFFE0E0E0)),
             // 실행 시간 섹션
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -254,8 +254,8 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                         Obx(() {
                           timerController.updateElapsedTime();
                           final elapsedTime = timerController.elapsedTime.value;
-                          final minutes = (elapsedTime.inMinutes % 60); // 분
-                          final seconds = (elapsedTime.inSeconds % 60); // 초
+                          final minutes = (elapsedTime.inHours); // 시
+                          final seconds = (elapsedTime.inMinutes % 60); // 분
                           final isDoubleDigit = minutes >= 10 && seconds >= 10;
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -280,7 +280,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                 ],
               ),
             ),
-            Divider(color: Color.fromARGB(255, 224, 224, 224)),
+            Divider(color: Color(0xFFE0E0E0)),
             // 타임 슬롯 섹션
             Padding(
               padding: const EdgeInsets.all(16.0),
