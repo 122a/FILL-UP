@@ -36,13 +36,12 @@ class AccountManagementPage extends StatelessWidget {
                   Obx(() {
                     return CircleAvatar(
                       radius: 50,
-                      backgroundImage: accountController
-                                  .profileImagePath.value ==
-                              'assets/profile.png'
-                          ? AssetImage(accountController.profileImagePath.value)
-                          : FileImage(File(
-                                  accountController.profileImagePath.value))
-                              as ImageProvider,
+                      backgroundImage:
+                          accountController.profileImagePath.value ==
+                                  'assets/profile.png'
+                              ? AssetImage(accountController.profileImagePath.value)
+                              : FileImage(File(accountController.profileImagePath.value))
+                                  as ImageProvider,
                     );
                   }),
                   Positioned(
@@ -50,11 +49,18 @@ class AccountManagementPage extends StatelessWidget {
                     right: 0,
                     child: GestureDetector(
                       onTap: () async {
-                        final pickedFile = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        if (pickedFile != null) {
-                          accountController
-                              .setProfileImagePath(pickedFile.path);
+                        if (!accountController.isImagePickerActive.value) {
+                          accountController.isImagePickerActive.value = true;
+                          try {
+                            final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                            if (pickedFile != null) {
+                              accountController.setProfileImagePath(pickedFile.path);
+                            }
+                          } catch (e) {
+                            // Handle any exceptions here
+                          } finally {
+                            accountController.isImagePickerActive.value = false;
+                          }
                         }
                       },
                       child: CircleAvatar(
@@ -116,15 +122,13 @@ class AccountManagementPage extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity, // 버튼의 너비를 설정
-                    padding: EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 0), // 버튼의 패딩을 설정
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0), // 버튼의 패딩을 설정
                     child: TextButton(
                       onPressed: () {
                         // 비밀번호 변경 페이지로 이동하는 로직 추가
                       },
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 15), // 버튼 내부 텍스트의 패딩을 설정
+                        padding: EdgeInsets.symmetric(vertical: 15), // 버튼 내부 텍스트의 패딩을 설정
                       ),
                       child: Text(
                         "비밀번호 변경하기",
@@ -140,15 +144,13 @@ class AccountManagementPage extends StatelessWidget {
                   Divider(color: Color(0xFFE0E0E0)),
                   Container(
                     width: double.infinity, // 버튼의 너비를 설정
-                    padding: EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 0), // 버튼의 패딩을 설정
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0), // 버튼의 패딩을 설정
                     child: TextButton(
                       onPressed: () {
                         // 계정 탈퇴 로직 추가
                       },
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 15), // 버튼 내부 텍스트의 패딩을 설정
+                        padding: EdgeInsets.symmetric(vertical: 15), // 버튼 내부 텍스트의 패딩을 설정
                       ),
                       child: Text(
                         "계정 탈퇴",
@@ -202,6 +204,8 @@ class AccountController extends GetxController {
   var userName = '허찬'.obs;
   var profileImagePath = 'assets/profile.png'.obs;
   var isExpanded = false.obs; // isExpanded 상태 추가
+  var isImagePickerActive = false.obs; // ImagePicker 상태 추가
+
   void setUserName(String name) {
     userName.value = name.isEmpty ? '사용자' : name;
   }
