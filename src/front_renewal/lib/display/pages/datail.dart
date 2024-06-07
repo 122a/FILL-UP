@@ -22,12 +22,12 @@ class Detail extends StatelessWidget {
           ),
         ),
         body: SizedBox(
-          width: 400,
+          width: 413,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
-                height: 200,
+                height: 225,
               ),
               YoutubePlayer(
                 controller: YoutubePlayerController(
