@@ -1,37 +1,60 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:front_renewal/main.dart';
-import 'package:front_renewal/auth/signup.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:front_renewal/auth/signup.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _obscureText = true;
+
+  Future<void> _login() async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      // 로그인 성공 시 처리
+      Get.snackbar("성공", "로그인 성공");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Get.snackbar("에러", "사용자를 찾을 수 없습니다.");
+      } else if (e.code == 'wrong-password') {
+        Get.snackbar("에러", "잘못된 비밀번호입니다.");
+      } else {
+        Get.snackbar("에러", "로그인에 실패했습니다.");
+      }
+    } catch (e) {
+      Get.snackbar("에러", "로그인 중 문제가 발생했습니다.");
+    }
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          //양 옆 공백 20px
-          horizontal: 20,
-        ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const SizedBox(
-              //천장과 로고 사이의 여백
-              height: 175,
-            ),
+            const SizedBox(height: 175),
             Row(
               children: [
-                const SizedBox(
-                  //로고와 왼쪽 벽사이의 여백
-                  width: 80,
-                ),
+                const SizedBox(width: 80),
                 Container(
-                  //로고
                   child: Image.asset(
                     'assets/fill_up_logo.png',
                     width: 53,
@@ -42,31 +65,27 @@ class Login extends StatelessWidget {
                 const Text(
                   "Fill UP",
                   style: TextStyle(
-                      fontSize: 28,
-                      fontFamily: 'SF-Pro-Display',
-                      fontWeight: FontWeight.w700),
+                    fontSize: 28,
+                    fontFamily: 'SF-Pro-Display',
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
-            const SizedBox(
-              //로고와 입력창 사이의 여백
-              height: 100,
-            ),
+            const SizedBox(height: 100),
             Form(
               child: Column(
                 children: [
                   TextFormField(
-                    //아이디 입력창
+                    controller: emailController,
                     decoration: const InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                        // default 입력창
                         borderSide: BorderSide(
                           color: Color(0xffC4C3C3),
                           width: 1.0,
                         ),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        //클릭했을 때 입력창
                         borderSide: BorderSide(
                           color: Color(0xff004fff),
                         ),
@@ -79,42 +98,40 @@ class Login extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    //아이디 비밀번호 입력창 사이의 여백
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   TextFormField(
-                    // 비밀번호 입력창
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.lock_outline), // 비밀번호 아이콘
-                      enabledBorder: UnderlineInputBorder(
-                        // default 입력창
+                    controller: passwordController,
+                    obscureText: _obscureText,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: _togglePasswordView,
+                      ),
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xffC4C3C3),
                           width: 1.0,
                         ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        //클릭했을 때 입력창
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xff004fff),
                         ),
                       ),
                       hintText: " 비밀번호를 입력해주세요.",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontFamily: "SF-Pro-Rounded",
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    // 입력창과 "비밀번호 잊으셨습니까" 안내 문구 사이의 여백
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   const Row(
-                    //"비밀번호 잊으셨나요?" 안내문구
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
@@ -128,13 +145,9 @@ class Login extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    // "비밀번호 잊으셨나요?" 안내문구와 로그인 버튼 사이의 여백
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   ElevatedButton(
-                    // 로그인 버튼
-                    onPressed: () {},
+                    onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff0b44f4),
                       minimumSize: const Size(353, 48),
@@ -155,16 +168,11 @@ class Login extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              // 로그인 버튼과 간편로그인 info 사이의 간격
-              height: 12,
-            ),
+            const SizedBox(height: 12),
             Container(
-              // 간편로그인 안내 information
               child: Image.asset('assets/simple_login_info.png'),
             ),
             SizedBox(
-              //네이버 로그인 버튼
               width: 353,
               height: 48,
               child: OutlinedButton.icon(
@@ -194,12 +202,8 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              // 네이버 로그인 버튼과 구글 로그인 버튼 사이 여백
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             SizedBox(
-              //구글 로그인 버튼
               width: 353,
               height: 48,
               child: OutlinedButton.icon(
@@ -229,18 +233,12 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             TextButton(
-              // 회원가입 페이지로 향하는 텍스트버튼
               onPressed: () {
-                Get.to(
-                  const SignUp(),
-                );
+                Get.to(SignUp());
               },
               child: const Row(
-                // 회원가입 안내와 버튼
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -249,9 +247,7 @@ class Login extends StatelessWidget {
                       fontFamily: "SF-Pro-Rounded",
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: Color(
-                        0xff747474,
-                      ),
+                      color: Color(0xff747474),
                     ),
                   ),
                   Text(

@@ -5,6 +5,13 @@ import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/pages/account_my.dart'; // 계정 관리 페이지 추가
 import 'package:front_renewal/auth/login.dart'; // 로그인 페이지 추가
 
+class TimeSlot {
+  final DateTime date;
+  final Duration watchTime;
+
+  TimeSlot(this.date, this.watchTime);
+}
+
 class My extends StatelessWidget with WidgetsBindingObserver {
   const My({super.key});
 
@@ -13,6 +20,25 @@ class My extends StatelessWidget with WidgetsBindingObserver {
     final TimerController timerController = Get.put(TimerController());
     final AccountController accountController = Get.put(AccountController());
 
+    // 일주일 간의 시청 시간 기록 + 예비용
+    var weeklyWatchTime = [
+      TimeSlot(DateTime(2024, 5, 28), Duration(hours: 12, minutes: 30)),
+      TimeSlot(DateTime(2024, 5, 29), Duration(hours: 6, minutes: 00)),
+      TimeSlot(DateTime(2024, 5, 30), Duration(hours: 24, minutes: 00)),
+      TimeSlot(DateTime(2024, 5, 31), Duration(hours: 12, minutes: 30)),
+      TimeSlot(DateTime(2024, 6, 1), Duration(hours: 2, minutes: 30)),
+      TimeSlot(DateTime(2024, 6, 2), Duration(hours: 1, minutes: 45)),
+      // 나머지 날짜의 기록 추가
+    ];
+    // 최신 날짜 순서로 정렬
+    weeklyWatchTime.sort((a, b) => b.date.compareTo(a.date));
+
+// 최신 5개의 데이터만 선택
+    if (weeklyWatchTime.length > 5) {
+      weeklyWatchTime = weeklyWatchTime.sublist(0, 5);
+    }
+// 그래프를 그릴 때 x축을 역순으로 지정
+    var reversedWeeklyWatchTime = weeklyWatchTime.reversed.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -33,7 +59,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
         ),
       ),
       body: SingleChildScrollView(
-        // 스크롤 가능하게 설정
+        // 스크롤 가능하게 설정 및 오버플로우 해결용
         child: Column(
           children: [
             // 계정 정보 섹션
@@ -204,7 +230,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                 ),
               );
             }),
-            const Divider(color: Color.fromARGB(255, 224, 224, 224)),
+            const Divider(color: Color(0xFFE0E0E0)),
             // 실행 시간 섹션
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -232,19 +258,19 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                         Obx(() {
                           timerController.updateElapsedTime();
                           final elapsedTime = timerController.elapsedTime.value;
-                          final minutes = (elapsedTime.inMinutes % 60); // 분
-                          final seconds = (elapsedTime.inSeconds % 60); // 초
+                          final minutes = (elapsedTime.inHours); // 시
+                          final seconds = (elapsedTime.inMinutes % 60); // 분
                           final isDoubleDigit = minutes >= 10 && seconds >= 10;
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              ' $minutes h  $seconds min',
+                              ' ${minutes} h  ${seconds} min',
                               style: TextStyle(
                                 height: 2.5,
                                 fontFamily: "Pretendard-Black",
                                 fontSize: 50,
                                 fontWeight: FontWeight.w900,
-                                color: const Color.fromARGB(255, 9, 150, 245),
+                                color: const Color(0xFF0996F5),
                                 letterSpacing: isDoubleDigit
                                     ? -2.0
                                     : 0.0, // 두 자릿수일 때 간격 줄이기
@@ -258,10 +284,10 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                 ],
               ),
             ),
-            const Divider(color: Color.fromARGB(255, 224, 224, 224)),
+            const Divider(color: Color(0xFFE0E0E0)),
             // 타임 슬롯 섹션
-            const Padding(
-              padding: EdgeInsets.all(16.0),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -283,11 +309,37 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                           style:
                               TextStyle(fontSize: 15, color: Color(0xE8707070)),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            '타임 슬롯 내용',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                        SizedBox(height: 18),
+                        Container(
+                          height: 100, // 그래프의 높이 설정
+                          alignment: Alignment.centerLeft, // 좌측 정렬 설정
+                          padding: EdgeInsets.only(left: 0), // 좌측 여백 제거
+                          child: ListView.builder(
+                            
+                            scrollDirection: Axis.horizontal,
+                            itemCount: reversedWeeklyWatchTime.length,
+                            
+                            itemBuilder: (context, index) {
+                              final timeSlot = reversedWeeklyWatchTime[index];
+                              final ratio = (timeSlot.watchTime.inHours + timeSlot.watchTime.inMinutes / 60) / 24.0;
+                              final barHeight = ratio * 100; // 그래프의 높이 계산
+                              return Container(
+                                width: 55, // 각 날짜의 너비 설정
+                                margin: EdgeInsets.symmetric(horizontal: 4),
+                                color: Color.fromARGB(
+                                    255, 0, 132, 255), // 각 날짜의 색상 설정
+                                height: barHeight,
+                                child: Center(
+                                  child: Text(
+                                    '${timeSlot.date.month}/${timeSlot.date.day}\n${timeSlot.watchTime.inHours}h ${timeSlot.watchTime.inMinutes % 60}m',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: "SF-Pro-Rounded",
+                                        color: Colors.white), // 흰색으로 설정
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
