@@ -6,9 +6,13 @@ import 'package:front_renewal/auth/login.dart';
 import 'package:front_renewal/auth/signup.dart';
 import 'package:front_renewal/binding/init_binding.dart';
 import 'package:front_renewal/controller/app_controller.dart';
+import 'package:front_renewal/controller/detail_controller.dart';
+import 'package:front_renewal/controller/home_controller.dart';
 import 'package:front_renewal/display/app.dart';
+import 'package:front_renewal/display/pages/datail.dart';
 import 'package:front_renewal/display/pages/search.dart';
 import 'package:get/get.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +37,16 @@ class FillUp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/search', page: () => const Search()),
+        GetPage(
+          name: '/detail/:videoId',
+          page: () => const Detail(),
+          binding: BindingsBuilder(
+            () {
+              Get.put(YoutubePlayerController(
+                  initialVideoId: Get.parameters["videoId"] as String));
+            },
+          ),
+        ),
       ],
     );
   }
