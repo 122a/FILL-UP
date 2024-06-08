@@ -19,7 +19,8 @@ class _SignUpState extends State<SignUp> {
   Future<void> _signUp() async {
     try {
       final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: "testdan2@gmail.com", password: "testdan1234"
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
       // 회원가입 성공 시 처리
       Get.snackbar("성공", "회원가입이 완료되었습니다.");
@@ -30,8 +31,7 @@ class _SignUpState extends State<SignUp> {
       } else if (e.code == 'email-already-in-use') {
         Get.snackbar("에러", "이미 사용 중인 이메일입니다.");
       } else {
-        print(e);
-        // Get.snackbar("에러", "회원가입에 실패했습니다.");
+        Get.snackbar("에러", "회원가입에 실패했습니다.");
       }
     } catch (e) {
       Get.snackbar("에러", "회원가입 중 문제가 발생했습니다.");

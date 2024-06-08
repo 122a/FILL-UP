@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:front_renewal/auth/signup.dart';
+import 'package:front_renewal/display/app.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -10,8 +11,6 @@ class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
-
-// "current_key": "AIzaSyAX0uTTe9UiYAHHJCDDWx3_XhwspXkTI7g"
 
 class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
@@ -26,6 +25,7 @@ class _LoginState extends State<Login> {
       );
       // 로그인 성공 시 처리
       Get.snackbar("성공", "로그인 성공");
+      Get.offAll(() => const App());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Get.snackbar("에러", "사용자를 찾을 수 없습니다.");
