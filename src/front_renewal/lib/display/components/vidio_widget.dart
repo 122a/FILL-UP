@@ -54,12 +54,18 @@ class _VidioWidgetState extends State<VidioWidget> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 5),
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
             child: CircleAvatar(
               // 유투브 채널 사진
               radius: 19.5,
-              backgroundColor: Color.fromARGB(255, 0, 81, 255),
+              backgroundColor: const Color(0xfff5f5f5),
+              child: SvgPicture.asset(
+                'assets/icons/Google_Bard_logo.svg',
+                color: const Color(0xff004fff),
+                width: 23,
+                height: 23,
+              ),
               // 유투브 채널 사진
             ),
           ),
