@@ -34,7 +34,7 @@ class FillUp extends StatelessWidget {
       initialBinding: InitialBinding(),
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const Login()),
+        GetPage(name: '/', page: () => const App()),
         GetPage(name: '/search', page: () => const Search()),
         GetPage(
           name: '/detail/:videoId',

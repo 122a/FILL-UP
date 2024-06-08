@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
             const SizedBox(height: 175),
             Row(
               children: [
-                const SizedBox(width: 80),
+                const SizedBox(width: 100),
                 Container(
                   child: Image.asset(
                     'assets/fill_up_logo.png',
@@ -238,7 +238,7 @@ class _LoginState extends State<Login> {
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
-                Get.to(SignUp());
+                Get.to(const SignUp());
               },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
