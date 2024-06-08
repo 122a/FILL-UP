@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:front_renewal/controller/home_controller.dart';
 
 class Search extends StatelessWidget {
   const Search({super.key});
@@ -20,29 +21,9 @@ class Search extends StatelessWidget {
           width: 300,
           child: Center(
             child: TextFormField(
-              //아이디 입력창
               onFieldSubmitted: (value) {
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print(value);
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
-                print("\n");
+                HomeController.to.searchVideos(value);
+                Get.back(); // 검색어 입력 후 홈 화면으로 돌아가기
               },
               cursorColor: Colors.grey,
               cursorHeight: 30,
@@ -51,7 +32,6 @@ class Search extends StatelessWidget {
                 filled: true,
                 contentPadding: const EdgeInsets.fromLTRB(15, 10, 0, 5),
                 enabledBorder: OutlineInputBorder(
-                  // default 입력창
                   borderSide: const BorderSide(
                     color: Color.fromARGB(0, 255, 255, 255),
                     width: 0,
@@ -59,7 +39,6 @@ class Search extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  //클릭했을 때 입력창
                   borderSide: const BorderSide(
                     color: Color.fromARGB(0, 255, 255, 255),
                     width: 0,

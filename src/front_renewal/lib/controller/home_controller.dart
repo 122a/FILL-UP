@@ -22,4 +22,15 @@ class HomeController extends GetxController {
       youtubeResult(youtubeVideoResult);
     }
   }
+
+  // 새로운 메소드 추가
+  void searchVideos(String query) async {
+    YoutubeVideoResult youtubeVideoResult =
+        await YoutubeRepository.to.loadVideo(query);
+
+    if (youtubeVideoResult.items != null &&
+        youtubeVideoResult.items!.isNotEmpty) {
+      youtubeResult(youtubeVideoResult);
+    }
+  }
 }

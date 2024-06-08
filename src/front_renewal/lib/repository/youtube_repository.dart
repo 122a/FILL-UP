@@ -14,10 +14,9 @@ class YoutubeRepository extends GetConnect {
     super.onInit();
   }
 
-  Future<YoutubeVideoResult> loadVideo() async {
-    String qr = "디자인베이스";
+  Future<YoutubeVideoResult> loadVideo([String query = "디자인 베이스"]) async {
     String url =
-        "https://www.googleapis.com/youtube/v3/search/?part=snippet&maxResults=25&order=date&type=video&videoDefinition=high&videoDuration=medium&key=AIzaSyBTIgG9ebGijQZogj3A9Gimxjm1EwNXLq8&q=$qr";
+        "https://www.googleapis.com/youtube/v3/search/?part=snippet&maxResults=25&order=date&type=video&videoDefinition=high&videoDuration=medium&key=AIzaSyBTIgG9ebGijQZogj3A9Gimxjm1EwNXLq8&q=$query";
 
     final response = await get(
       Uri.parse(url),

@@ -94,7 +94,7 @@ class _VidioWidgetState extends State<VidioWidget> {
                   children: [
                     // 채널명
                     Text(
-                      "${widget.video.snippet.channelTitle} • ",
+                      _formatChannelName(widget.video.snippet.channelTitle),
                       style: const TextStyle(fontSize: 13),
                     ),
                     //조회수
@@ -118,5 +118,13 @@ class _VidioWidgetState extends State<VidioWidget> {
         ],
       ),
     );
+  }
+
+  String _formatChannelName(String channelTitle) {
+    if (channelTitle.length > 8) {
+      return "${channelTitle.substring(0, 8)}··· • ";
+    } else {
+      return "$channelTitle • ";
+    }
   }
 }

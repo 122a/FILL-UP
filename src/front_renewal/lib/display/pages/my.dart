@@ -6,13 +6,6 @@ import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/pages/account_my.dart'; // 계정 관리 페이지 추가
 import 'package:front_renewal/auth/login.dart'; // 로그인 페이지 추가
 
-class TimeSlot {
-  final DateTime date;
-  final Duration watchTime;
-
-  TimeSlot(this.date, this.watchTime);
-}
-
 class My extends StatelessWidget with WidgetsBindingObserver {
   const My({super.key});
 
@@ -25,10 +18,10 @@ class My extends StatelessWidget with WidgetsBindingObserver {
     var weeklyWatchTime = [
       TimeSlot(DateTime(2024, 5, 28), Duration(hours: 12, minutes: 30)),
       TimeSlot(DateTime(2024, 5, 29), Duration(hours: 6, minutes: 00)),
-      TimeSlot(DateTime(2024, 5, 30), Duration(hours: 24, minutes: 00)),
-      TimeSlot(DateTime(2024, 5, 31), Duration(hours: 12, minutes: 30)),
-      TimeSlot(DateTime(2024, 6, 1), Duration(hours: 2, minutes: 30)),
-      TimeSlot(DateTime(2024, 6, 2), Duration(hours: 1, minutes: 45)),
+      TimeSlot(DateTime(2024, 6, 5), Duration(hours: 24, minutes: 00)),
+      TimeSlot(DateTime(2024, 6, 7), Duration(hours: 12, minutes: 30)),
+      TimeSlot(DateTime(2024, 6, 8), Duration(hours: 2, minutes: 30)),
+      TimeSlot(DateTime(2024, 6, 9), Duration(hours: 1, minutes: 45)),
       // 나머지 날짜의 기록 추가
     ];
     // 최신 날짜 순서로 정렬
@@ -40,6 +33,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
     }
 // 그래프를 그릴 때 x축을 역순으로 지정
     var reversedWeeklyWatchTime = weeklyWatchTime.reversed.toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -54,7 +48,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Divider(
-            color: Color.fromARGB(255, 224, 224, 224),
+            color: Color(0xFFE0E0E0),
             height: 1.0,
           ),
         ),
@@ -84,20 +78,12 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                     width: 70,
                                     height: 70,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(
-                                          Icons.error); // 기본 아이콘으로 대체
-                                    },
                                   )
                                 : Image.file(
                                     File(imagePath),
                                     width: 70,
                                     height: 70,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(
-                                          Icons.error); // 기본 아이콘으로 대체
-                                    },
                                   ),
                           );
                         }),
@@ -185,36 +171,13 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                             padding:
                                 const EdgeInsets.only(right: 30.0), // 오른쪽 여백 추가
                             child: TextButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("계정에서 로그아웃",
-                                          style: TextStyle(
-                                            fontFamily: "SF-Pro-Rounded",
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w800,
-                                          )),
-                                      content: const Text("정말 로그아웃 하시겠습니까?"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Get.to(
-                                                const Login()); // 로그인 페이지로 이동
-                                          },
-                                          child: const Text("예"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Get.back();
-                                          },
-                                          child: const Text("아니오"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onPressed: () async {
+                                try {
+                                  await FirebaseAuth.instance.signOut();
+                                  Get.to(const Login());
+                                } catch (e) {
+                                  Get.snackbar("오류", "로그아웃 중 오류가 발생했습니다.");
+                                }
                               },
                               child: const Text(
                                 "계정에서 로그아웃",
