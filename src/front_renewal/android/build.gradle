@@ -1,4 +1,4 @@
-allprojects {
+buildscript {
     repositories {
         google()
         mavenCentral()
@@ -7,6 +7,13 @@ allprojects {
         classpath 'com.android.tools.build:gradle:4.2.0' // 또는 프로젝트에 맞는 최신 버전 사용
         classpath 'com.google.gms:google-services:4.3.15'
         // classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
     }
 }
 

@@ -16,14 +16,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: FirebaseOptions(
-    apiKey: 'key',
-    appId: 'id',
-    messagingSenderId: 'sendid',
-    projectId: 'myapp',
-    storageBucket: 'myapp-b9yt18.appspot.com',
-  ));
+  await Firebase.initializeApp();
   Get.put(TimerController()); // 타이머 컨트롤러 초기화
   runApp(const FillUp());
 }
