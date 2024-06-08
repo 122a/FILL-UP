@@ -38,7 +38,9 @@ class TimerController extends GetxController {
   }
 
   void updateElapsedTime() {
-    elapsedTime.value = DateTime.now().difference(startTime);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      elapsedTime.value = DateTime.now().difference(startTime);
+    });
   }
 
   Future<void> _saveStartTime() async {

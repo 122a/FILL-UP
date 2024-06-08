@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:front_renewal/controller/app_controller.dart';
 import 'package:front_renewal/display/pages/account_my.dart'; // 계정 관리 페이지 추가
 import 'package:front_renewal/auth/login.dart'; // 로그인 페이지 추가
@@ -134,8 +135,10 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                   ),
                                 ],
                               ),
-                              const Text(
-                                '  chan0823kr@gmail.com',
+                              Text(
+                                '  ' +
+                                    (FirebaseAuth.instance.currentUser?.email ??
+                                        ''),
                                 style: TextStyle(
                                   fontFamily: "SF-Pro-Rounded",
                                   fontSize: 13,
@@ -315,13 +318,13 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                           alignment: Alignment.centerLeft, // 좌측 정렬 설정
                           padding: EdgeInsets.only(left: 0), // 좌측 여백 제거
                           child: ListView.builder(
-                            
                             scrollDirection: Axis.horizontal,
                             itemCount: reversedWeeklyWatchTime.length,
-                            
                             itemBuilder: (context, index) {
                               final timeSlot = reversedWeeklyWatchTime[index];
-                              final ratio = (timeSlot.watchTime.inHours + timeSlot.watchTime.inMinutes / 60) / 24.0;
+                              final ratio = (timeSlot.watchTime.inHours +
+                                      timeSlot.watchTime.inMinutes / 60) /
+                                  24.0;
                               final barHeight = ratio * 100; // 그래프의 높이 계산
                               return Container(
                                 width: 55, // 각 날짜의 너비 설정

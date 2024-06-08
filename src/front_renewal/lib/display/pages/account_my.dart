@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:front_renewal/auth/login.dart';
+import 'package:front_renewal/display/pages/change_pwd.dart';
 
 class AccountManagementPage extends StatelessWidget {
   const AccountManagementPage({super.key});
@@ -36,12 +39,13 @@ class AccountManagementPage extends StatelessWidget {
                   Obx(() {
                     return CircleAvatar(
                       radius: 50,
-                      backgroundImage:
-                          accountController.profileImagePath.value ==
-                                  'assets/profile.png'
-                              ? AssetImage(accountController.profileImagePath.value)
-                              : FileImage(File(accountController.profileImagePath.value))
-                                  as ImageProvider,
+                      backgroundImage: accountController
+                                  .profileImagePath.value ==
+                              'assets/profile.png'
+                          ? AssetImage(accountController.profileImagePath.value)
+                          : FileImage(File(
+                                  accountController.profileImagePath.value))
+                              as ImageProvider,
                     );
                   }),
                   Positioned(
@@ -52,12 +56,13 @@ class AccountManagementPage extends StatelessWidget {
                         if (!accountController.isImagePickerActive.value) {
                           accountController.isImagePickerActive.value = true;
                           try {
-                            final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                            final pickedFile = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
                             if (pickedFile != null) {
-                              accountController.setProfileImagePath(pickedFile.path);
+                              accountController
+                                  .setProfileImagePath(pickedFile.path);
                             }
                           } catch (e) {
-                            // Handle any exceptions here
                           } finally {
                             accountController.isImagePickerActive.value = false;
                           }
@@ -78,7 +83,7 @@ class AccountManagementPage extends StatelessWidget {
               ),
               SizedBox(height: 48),
               SizedBox(
-                width: 350, // 너비 조절
+                width: 350,
                 child: TextField(
                   controller: nameController,
                   onChanged: (value) {
@@ -92,7 +97,6 @@ class AccountManagementPage extends StatelessWidget {
                     labelText: '이름',
                     border: OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
-                      // default 입력창
                       borderSide: const BorderSide(
                         color: Color(0xffC4C3C3),
                         width: 1,
@@ -100,7 +104,6 @@ class AccountManagementPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      // 클릭했을 때 입력창
                       borderSide: const BorderSide(
                         color: Color.fromARGB(153, 0, 81, 255),
                         width: 1,
@@ -121,14 +124,18 @@ class AccountManagementPage extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                    width: double.infinity, // 버튼의 너비를 설정
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0), // 버튼의 패딩을 설정
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                     child: TextButton(
                       onPressed: () {
-                        // 비밀번호 변경 페이지로 이동하는 로직 추가
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangePasswordPage()),
+                        );
                       },
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 15), // 버튼 내부 텍스트의 패딩을 설정
+                        padding: EdgeInsets.symmetric(vertical: 15),
                       ),
                       child: Text(
                         "비밀번호 변경하기",
@@ -143,14 +150,55 @@ class AccountManagementPage extends StatelessWidget {
                   ),
                   Divider(color: Color(0xFFE0E0E0)),
                   Container(
-                    width: double.infinity, // 버튼의 너비를 설정
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0), // 버튼의 패딩을 설정
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                     child: TextButton(
-                      onPressed: () {
-                        // 계정 탈퇴 로직 추가
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("계정 탈퇴"),
+                              content: Text("정말로 계정을 탈퇴하시겠습니까?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () async {
+                                    try {
+                                      // 현재 사용자가 있는지 확인합니다.
+                                      User? user =
+                                          FirebaseAuth.instance.currentUser;
+                                      if (user != null) {
+                                        // 계정을 탈퇴합니다.
+                                        await user.delete();
+                                        // 탈퇴 후 로그아웃 처리
+                                        await FirebaseAuth.instance.signOut();
+                                        // 탈퇴가 성공적으로 이루어졌으므로 다이얼로그 닫기
+                                        Navigator.of(context).pop();
+                                        // 사용자에게 탈퇴 성공 메시지를 표시합니다.
+                                        Get.snackbar(
+                                            "성공", "계정이 성공적으로 탈퇴되었습니다.");
+                                        Get.offAll(() => const Login());
+                                      }
+                                    } catch (e) {
+                                      // 계정 탈퇴 중에 오류가 발생한 경우 오류 메시지를 표시합니다.
+                                      Get.snackbar("오류", "계정 탈퇴 중 오류가 발생했습니다.");
+                                    }
+                                  },
+                                  child: Text("예"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // 다이얼로그 닫기
+                                  },
+                                  child: Text("아니오"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 15), // 버튼 내부 텍스트의 패딩을 설정
+                        padding: EdgeInsets.symmetric(vertical: 15),
                       ),
                       child: Text(
                         "계정 탈퇴",
@@ -171,8 +219,6 @@ class AccountManagementPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // 보내기 버튼을 눌렀을 때의 로직
-                  // 저장하기 버튼을 누르면 my.dart 페이지로 이동
                   Get.back();
                 },
                 style: ElevatedButton.styleFrom(
@@ -201,7 +247,7 @@ class AccountManagementPage extends StatelessWidget {
 }
 
 class AccountController extends GetxController {
-  var userName = '허찬'.obs;
+  var userName = '사용자'.obs;
   var profileImagePath = 'assets/profile.png'.obs;
   var isExpanded = false.obs; // isExpanded 상태 추가
   var isImagePickerActive = false.obs; // ImagePicker 상태 추가
