@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:front_renewal/controller/app_controller.dart';
-import 'package:front_renewal/display/pages/account_my.dart';
+import 'package:front_renewal/controller/timer_controller.dart';
+import 'package:front_renewal/display/pages/account_my.dart'; 
 import 'package:front_renewal/auth/login.dart';
-
+import 'package:front_renewal/controller/account_controller.dart';
 class My extends StatelessWidget with WidgetsBindingObserver {
   const My({super.key});
 
@@ -13,24 +13,6 @@ class My extends StatelessWidget with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final TimerController timerController = Get.put(TimerController());
     final AccountController accountController = Get.put(AccountController());
-
-    // 일주일 간의 시청 시간 기록 + 예비용
-    var weeklyWatchTime = [
-      TimeSlot(DateTime(2024, 5, 28), Duration(hours: 12, minutes: 30)),
-      TimeSlot(DateTime(2024, 6, 5), Duration(hours: 24, minutes: 00)),
-      TimeSlot(DateTime(2024, 6, 7), Duration(hours: 12, minutes: 30)),
-      TimeSlot(DateTime(2024, 6, 8), Duration(hours: 2, minutes: 30)),
-      TimeSlot(DateTime(2024, 6, 9), Duration(hours: 1, minutes: 45)),
-    ];
-    // 최신 날짜 순서로 정렬
-    weeklyWatchTime.sort((a, b) => b.date.compareTo(a.date));
-
-    // 최신 5개의 데이터만 선택
-    if (weeklyWatchTime.length > 5) {
-      weeklyWatchTime = weeklyWatchTime.sublist(0, 5);
-    }
-    // 그래프를 그릴 때 x축을 역순으로 지정
-    var reversedWeeklyWatchTime = weeklyWatchTime.reversed.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -52,22 +34,19 @@ class My extends StatelessWidget with WidgetsBindingObserver {
         ),
       ),
       body: SingleChildScrollView(
-        // 스크롤 가능하게 설정 및 오버플로우 해결용
         child: Column(
           children: [
             // 계정 정보 섹션
             Obx(() {
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: Column(
                   children: [
                     Row(
                       // 사용자 계정 이미지
                       children: [
                         Obx(() {
-                          final imagePath =
-                              accountController.profileImagePath.value;
+                          final imagePath = accountController.profileImagePath.value;
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(25.0),
                             child: imagePath == 'assets/profile.png'
@@ -76,14 +55,18 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                     width: 70,
                                     height: 70,
                                     fit: BoxFit.cover,
-                   
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(Icons.error); // 기본 아이콘으로 대체
+                                    },
                                   )
                                 : Image.file(
                                     File(imagePath),
                                     width: 70,
                                     height: 70,
                                     fit: BoxFit.cover,
-                                
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(Icons.error); // 기본 아이콘으로 대체
+                                    },
                                   ),
                           );
                         }),
@@ -94,8 +77,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                             children: [
                               const SizedBox(height: 35),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Obx(() {
                                     return Text(
@@ -112,19 +94,14 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                       accountController.toggleExpanded();
                                     },
                                     child: Icon(
-                                      accountController.isExpanded.value
-                                          ? Icons.expand_less
-                                          : Icons.expand_more,
-                                      color:
-                                          const Color.fromARGB(255, 90, 90, 90),
+                                      accountController.isExpanded.value ? Icons.expand_less : Icons.expand_more,
+                                      color: const Color.fromARGB(255, 90, 90, 90),
                                     ),
                                   ),
                                 ],
                               ),
                               Text(
-                                '  ' +
-                                    (FirebaseAuth.instance.currentUser?.email ??
-                                        ''),
+                                '  ' + (FirebaseAuth.instance.currentUser?.email ?? ''),
                                 style: TextStyle(
                                   fontFamily: "SF-Pro-Rounded",
                                   fontSize: 13,
@@ -140,11 +117,9 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                     Get.to(const AccountManagementPage());
                                   },
                                   style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 8.0),
+                                    padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                                     minimumSize: const Size(0, 0),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   ),
                                   child: const Text(
                                     "내 계정 관리하기",
@@ -168,39 +143,15 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 30.0), // 오른쪽 여백 추가
+                            padding: const EdgeInsets.only(right: 30.0), // 오른쪽 여백 추가
                             child: TextButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("계정에서 로그아웃",
-                                          style: TextStyle(
-                                            fontFamily: "SF-Pro-Rounded",
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w800,
-                                          )),
-                                      content: const Text("정말 로그아웃 하시겠습니까?"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Get.to(
-                                                const Login()); // 로그인 페이지로 이동
-                                          },
-                                          child: const Text("예"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Get.back();
-                                          },
-                                          child: const Text("아니오"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                              onPressed: () async {
+                                try {
+                                  await FirebaseAuth.instance.signOut();
+                                  Get.to(const Login());
+                                } catch (e) {
+                                  Get.snackbar("오류", "로그아웃 중 오류가 발생했습니다.");
+                                }
                               },
                               child: const Text(
                                 "계정에서 로그아웃",
@@ -241,13 +192,11 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                       children: [
                         const Text(
                           ' 시청 시간',
-                          style:
-                              TextStyle(fontSize: 15, color: Color(0xE8707070)),
+                          style: TextStyle(fontSize: 15, color: Color(0xE8707070)),
                         ),
                         Obx(() {
-                          timerController.updateElapsedTime();
                           final elapsedTime = timerController.elapsedTime.value;
-                          final minutes = (elapsedTime.inHours); // 시
+                          final minutes = elapsedTime.inHours; // 시간
                           final seconds = (elapsedTime.inMinutes % 60); // 분
                           final isDoubleDigit = minutes >= 10 && seconds >= 10;
                           return Padding(
@@ -260,9 +209,7 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                                 fontSize: 50,
                                 fontWeight: FontWeight.w900,
                                 color: const Color(0xFF0996F5),
-                                letterSpacing: isDoubleDigit
-                                    ? -2.0
-                                    : 0.0, // 두 자릿수일 때 간격 줄이기
+                                letterSpacing: isDoubleDigit ? -2.0 : 0.0, // 두 자릿수일 때 간격 줄이기
                               ),
                             ),
                           );
@@ -295,41 +242,45 @@ class My extends StatelessWidget with WidgetsBindingObserver {
                       children: [
                         Text(
                           ' 타임 슬롯',
-                          style:
-                              TextStyle(fontSize: 15, color: Color(0xE8707070)),
+                          style: TextStyle(fontSize: 15, color: Color(0xE8707070)),
                         ),
                         SizedBox(height: 18),
                         Container(
                           height: 100, // 그래프의 높이 설정
                           alignment: Alignment.centerLeft, // 좌측 정렬 설정
                           padding: EdgeInsets.only(left: 0), // 좌측 여백 제거
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: reversedWeeklyWatchTime.length,
-                            itemBuilder: (context, index) {
-                              final timeSlot = reversedWeeklyWatchTime[index];
-                              final ratio = (timeSlot.watchTime.inHours +
-                                      timeSlot.watchTime.inMinutes / 60) /
-                                  24.0;
-                              final barHeight = ratio * 100; // 그래프의 높이 계산
-                              return Container(
-                                width: 55, // 각 날짜의 너비 설정
-                                margin: EdgeInsets.symmetric(horizontal: 4),
-                                color: Color.fromARGB(
-                                    255, 0, 132, 255), // 각 날짜의 색상 설정
-                                height: barHeight,
-                                child: Center(
-                                  child: Text(
-                                    '${timeSlot.date.month}/${timeSlot.date.day}\n${timeSlot.watchTime.inHours}h ${timeSlot.watchTime.inMinutes % 60}m',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: "SF-Pro-Rounded",
-                                        color: Colors.white), // 흰색으로 설정
+                          child: Obx(() {
+                            final dailyWatchTime = timerController.dailyWatchTime;
+                            final today = DateTime.now();
+                            final lastFiveDays = List.generate(5, (i) => today.subtract(Duration(days: i)))
+                                .map((date) => TimeSlot(date, dailyWatchTime[timerController.formatDate(date)] ?? Duration.zero))
+                                .toList();
+                            lastFiveDays.sort((a, b) => a.date.compareTo(b.date));
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: lastFiveDays.length,
+                              itemBuilder: (context, index) {
+                                final timeSlot = lastFiveDays[index];
+                                final ratio = (timeSlot.watchTime.inHours + timeSlot.watchTime.inMinutes / 60) / 24.0;
+                                final barHeight = ratio * 100; // 그래프의 높이 계산
+                                return Container(
+                                  width: 55, // 각 날짜의 너비 설정
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                  color: Color.fromARGB(255, 0, 132, 255), // 각 날짜의 색상 설정
+                                  height: barHeight,
+                                  child: Center(
+                                    child: Text(
+                                      '${timeSlot.date.month}/${timeSlot.date.day}\n${timeSlot.watchTime.inHours}h ${timeSlot.watchTime.inMinutes % 60}m',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: "SF-Pro-Rounded",
+                                          color: Colors.white), // 흰색으로 설정
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
+                                );
+                              },
+                            );
+                          }),
                         ),
                       ],
                     ),

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 시청 시간 Firestore에 저장하는 용도입니다.
-
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -33,5 +31,18 @@ class FirestoreService {
       return watchTimes;
     }
     return {};
+  }
+
+  Future<void> initializeUserData(User user) async {
+    await _firestore.collection('users').doc(user.email).set({
+      'name': user.displayName ?? '사용자',
+      'profileImagePath': 'assets/profile.png',
+    });
+
+    DateTime now = DateTime.now();
+    String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    await _firestore.collection('users').doc(user.email).collection('watch_time').doc(formattedDate).set({
+      'watchTime': 0,
+    });
   }
 }
